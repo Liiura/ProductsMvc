@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProductsStore.ContextDB;
+using ProductsStore.Mapper;
 
 namespace ProductsStore
 {
@@ -22,7 +23,11 @@ namespace ProductsStore
         {
             services.AddControllersWithViews();
             var connectionStrings = Configuration["ConnectionStrings:Dev"];
-            services.AddDbContext<ProductsContext>(o => o.UseSqlServer(connectionStrings));
+            services.AddDbContext<ProductsContext>(o => o.UseLazyLoadingProxies().UseSqlServer(connectionStrings));
+            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(Mappers));
+            services.AddDistributedMemoryCache();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,7 +45,7 @@ namespace ProductsStore
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthorization();
@@ -50,7 +55,7 @@ namespace ProductsStore
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Login}/{action=Index}/{id?}");
             });
         }
     }
