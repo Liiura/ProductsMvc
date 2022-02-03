@@ -16,6 +16,7 @@
 !*CommonReferences/*.dll
 ####################
 # VS Upgrade stuff #
+.vs
 ####################
 UpgradeLog.XML
 _UpgradeReport_Files/

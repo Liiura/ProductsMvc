@@ -20,8 +20,8 @@ namespace ProductsStore.ContextDB
             var adminRole = new RoleType
             {
                 Id = Guid.NewGuid(),
-                Description = "Client",
-                Name = "Client",
+                Description = "Admin",
+                Name = "Admin",
                 CreatedDate = DateTime.Now,
             };
             modelBuilder.Entity<TypeProduct>().HasData(
@@ -58,8 +58,8 @@ namespace ProductsStore.ContextDB
                 new RoleType
                 {
                     Id = Guid.NewGuid(),
-                    Description = "Admin",
-                    Name = "Admin",
+                    Description = "Client",
+                    Name = "Client",
                     CreatedDate = DateTime.Now,
                 },
                 adminRole
