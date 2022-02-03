@@ -21,9 +21,15 @@ namespace ProductsStore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNToastNotifyNoty(new NToastNotify.NotyOptions()
+            {
+                ProgressBar = true,
+                Timeout = 3000,
+                Theme = "mint"
+            });
             var connectionStrings = Configuration["ConnectionStrings:Dev"];
             services.AddDbContext<ProductsContext>(o => o.UseLazyLoadingProxies().UseSqlServer(connectionStrings));
+
             services.AddAutoMapper(typeof(Startup));
             services.AddAutoMapper(typeof(Mappers));
             services.AddDistributedMemoryCache();
@@ -33,6 +39,7 @@ namespace ProductsStore
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseNToastNotify();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -43,24 +50,22 @@ namespace ProductsStore
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSession();
             app.UseRouting();
 
             app.UseAuthorization();
-
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Login}/{action=Index}/{id?}");
-                endpoints.MapAreaControllerRoute(
-                    name: "Admin",
-                    areaName: "Admin",
-                    pattern: "Admin/{controller=Home}/{action=Index}"
-                );
+                name: "default",
+                pattern: "{controller=Login}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                name: "areas",
+                pattern: "{area}/{controller}/{did?}/{action=Index}/{id?}");
             });
         }
     }

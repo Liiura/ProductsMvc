@@ -45,6 +45,7 @@
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <script src="~/js/login.js"></script>
+    @await Component.InvokeAsync("NToastNotify")
     <script type="text/javascript">
         var baseUrl = '@Url.Content("~/")';
         var loginEditor = loginEditor();

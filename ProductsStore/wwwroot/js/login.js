@@ -16,27 +16,11 @@
             }
         });
     }
-    //function SignIn() {
-    //    formElement.validate();
-    //    if (formElement.valid()) {
-    //        AjaxSignInRequest()
-    //    }
-    //}
-    //function AjaxSignInRequest() {
-    //    $.ajax({
-    //        url: baseControllerUrl + "SignIn",
-    //        type: "Post",
-    //        data: formElement.serialize(),
-    //        success: function (data) {
-    //            console.log(data);
-    //        }
-    //    });
-    //}
     async function SignIn() {
         formElement.validate();
         if (formElement.valid()) {
             const result = await AjaxSignInRequest();
-            console.log(result);
+            Success(result);
         }
     }
     async function AjaxSignInRequest() {
@@ -52,6 +36,11 @@
             return result;
         } catch (error) {
             console.error(error);
+        }
+    }
+    function Success(data) {
+        if (data.isSuccess) {
+            window.location.href = data.redirectToUrl;
         }
     }
     return {

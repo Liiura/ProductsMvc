@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ProductsStore.Models;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProductsStore.Controllers
 {
@@ -17,7 +13,7 @@ namespace ProductsStore.Controllers
         {
             _logger = logger;
         }
-
+        [Area("Default")]
         public IActionResult Index()
         {
             return View();

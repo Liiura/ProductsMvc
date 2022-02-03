@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 using ProductsStore.ContextDB;
 using ProductsStore.Extensions;
 using ProductsStore.Handlers;
@@ -11,10 +12,12 @@ namespace ProductsStore.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly LoginHandler LoginHandlerRepo;
-        public LoginController(ProductsContext _dbProduts)
+        private readonly LoginHandler _LoginHandlerRepo;
+        private readonly IToastNotification _ToastNotification;
+        public LoginController(ProductsContext _dbProduts, IToastNotification toastNotification)
         {
-            LoginHandlerRepo = new LoginHandler(_dbProduts);
+            _LoginHandlerRepo = new LoginHandler(_dbProduts);
+            _ToastNotification = toastNotification;
         }
         public IActionResult Index()
         {
@@ -23,12 +26,13 @@ namespace ProductsStore.Controllers
         [HttpPost]
         public async Task<JsonResult> SignIn(UserViewModel dataLogin)
         {
-            var user = await LoginHandlerRepo.SignIn(dataLogin);
+            var user = await _LoginHandlerRepo.SignIn(dataLogin);
             if (user.IdUser != null && user.IdUser != Guid.Empty)
             {
                 HttpContext.Session.SetObject("UserSession", user);
-                return Json(new { IsSuccess = true });
+                return Json(new { IsSuccess = true, redirectToUrl = RedirectToAction("Index", "Home", new { area = "Admin" }) });
             }
+            _ToastNotification.AddErrorToastMessage(message: "Your request couldn't be processed");
             return Json(new { IsSuccess = false, Error = "User not found" });
         }
     }
