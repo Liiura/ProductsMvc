@@ -40,7 +40,7 @@
     }
     function Success(data) {
         if (data.isSuccess) {
-            window.location.href = data.redirectToUrl;
+            window.location.href = baseUrl+"Admin/Home/";
         }
     }
     return {
