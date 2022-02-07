@@ -22,14 +22,11 @@ namespace ProductsStore.Handlers
             var response = new ResponsePayload();
             try
             {
-                using (var context = _DbProducts)
-                {
-                    var model = _Mapper.Map(dataToMap, objectToInsert);
-                    await context.Set<T>().AddAsync(model);
-                    await context.SaveChangesAsync();
-                    response.IsSuccess = true;
-                    return response;
-                }
+                var model = _Mapper.Map(dataToMap, objectToInsert);
+                await _DbProducts.Set<T>().AddAsync(model);
+                await _DbProducts.SaveChangesAsync();
+                response.IsSuccess = true;
+                return response;
             }
             catch (Exception ex)
             {
@@ -42,14 +39,11 @@ namespace ProductsStore.Handlers
             var response = new ResponsePayload();
             try
             {
-                using (var context = _DbProducts)
-                {
-                    var dataToDelete = await GetOneEntity(id);
-                    context.Set<T>().Remove(dataToDelete);
-                    await context.SaveChangesAsync();
-                    response.IsSuccess = true;
-                    return response;
-                }
+                var dataToDelete = await GetOneEntity(id);
+                _DbProducts.Set<T>().Remove(dataToDelete);
+                await _DbProducts.SaveChangesAsync();
+                response.IsSuccess = true;
+                return response;
             }
             catch (Exception ex)
             {
@@ -59,32 +53,25 @@ namespace ProductsStore.Handlers
         }
         public virtual async Task<T> GetOneEntity(Guid id)
         {
-            using (var context = _DbProducts)
-            {
-                return await context.Set<T>().FindAsync(id);
-            }
+            var data = await _DbProducts.Set<T>().FindAsync(id);
+            return data;
         }
-        public virtual async Task<List<T>> GetAllEntity(Guid id)
+        public virtual async Task<List<T>> GetAllEntities()
         {
-            using (var context = _DbProducts)
-            {
-                return await context.Set<T>().ToListAsync();
-            }
+            var data = await _DbProducts.Set<T>().ToListAsync();
+            return data;
         }
         public virtual async Task<ResponsePayload> UpdateEntity(object dataToMap, Guid id)
         {
             var response = new ResponsePayload();
             try
             {
-                using (var context = _DbProducts)
-                {
-                    var entityToUpdate = await GetOneEntity(id);
-                    var model = _Mapper.Map(dataToMap, entityToUpdate);
-                    context.Set<T>().Update(model);
-                    await context.SaveChangesAsync();
-                    response.IsSuccess = true;
-                    return response;
-                }
+                var entityToUpdate = await GetOneEntity(id);
+                var model = _Mapper.Map(dataToMap, entityToUpdate);
+                _DbProducts.Set<T>().Update(model);
+                await _DbProducts.SaveChangesAsync();
+                response.IsSuccess = true;
+                return response;
             }
             catch (Exception ex)
             {

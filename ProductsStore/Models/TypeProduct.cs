@@ -18,6 +18,7 @@ namespace ProductsStore.Models
         {
             CreatedDate = DateTime.Now;
             Id = Guid.NewGuid();
+            Products = new List<Product>();
         }
     }
 }

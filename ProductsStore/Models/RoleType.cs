@@ -14,6 +14,7 @@ namespace ProductsStore.Models
         {
             CreatedDate = DateTime.Now;
             Id = Guid.NewGuid();
+            UserClients = new List<UserClient>();
         }
     }
 }

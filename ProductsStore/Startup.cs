@@ -59,13 +59,14 @@ namespace ProductsStore
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapAreaControllerRoute(
+                   name: "AdminArea",
+                   areaName: "Admin",
+                   pattern: "Admin/{controller=Home}/{action=Index}"); //This is Administrator route. You can you {id} and other parameters which you want
                 endpoints.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Login}/{action=Index}/{id?}");
 
-                endpoints.MapControllerRoute(
-                name: "areas",
-                pattern: "{area}/{controller}/{did?}/{action=Index}/{id?}");
             });
         }
     }

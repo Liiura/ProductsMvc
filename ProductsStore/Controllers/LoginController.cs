@@ -30,7 +30,7 @@ namespace ProductsStore.Controllers
             if (user.IdUser != null && user.IdUser != Guid.Empty)
             {
                 HttpContext.Session.SetObject("UserSession", user);
-                return Json(new { IsSuccess = true, redirectToUrl = Url.Action("", "", new { area = "Admin" }) });
+                return Json(new { IsSuccess = true, redirectToUrl = Url.Action("", "Home", new { area = "Admin" }) });
             }
             _ToastNotification.AddErrorToastMessage(message: "Your request couldn't be processed");
             return Json(new { IsSuccess = false, Error = "User not found" });
