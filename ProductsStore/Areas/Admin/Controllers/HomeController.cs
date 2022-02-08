@@ -32,6 +32,13 @@ namespace ProductsStore.Areas.Admin.Controllers
             var productsList = await _ProductHandler.GetAllProductsWithProxy();
             return View(productsList);
         }
+        public async Task<PartialViewResult> RenderProductsCardWithFilter(string description, Guid? id)
+        {
+            if (!string.IsNullOrEmpty(description))
+            {
+
+            }
+        }
         public async Task<ActionResult> CreateProduct()
         {
             List<SelectListItem> lstActiveProduct = new List<SelectListItem>
