@@ -73,5 +73,17 @@ namespace ProductsStore.Areas.Admin.Controllers
             ViewBag.OptionsValue = lstActiveProduct;
             return View(response);
         }
+        public async Task UpdateProductInformation(EditProductEditViewModel data)
+        {
+            var response = await _ProductHandler.UpdateProductInformation(data);
+            if (response.IsSuccess)
+            {
+                _ToastNotification.AddSuccessToastMessage("Product updated");
+            }
+            else
+            {
+                _ToastNotification.AddErrorToastMessage("Internal server error");
+            }
+        }
     }
 }

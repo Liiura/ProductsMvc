@@ -6,6 +6,7 @@ using ProductsStore.Models;
 using ProductsStore.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProductsStore.Handlers
@@ -48,12 +49,37 @@ namespace ProductsStore.Handlers
                 throw;
             }
         }
+        public async Task<List<ProductsHomeViewModel>> GetAllProductsByDescriptionWithProxy(string description)
+        {
+            try
+            {
+                using (var context = _DbProducts)
+                {
+                    var lsProductViewModel = new List<ProductsHomeViewModel>();
+                    var payload = await context.Product.Where(x => x.Description.Contains(description)).ToListAsync();
+                    foreach (var productItem in payload)
+                    {
+                        lsProductViewModel.Add(new ProductsHomeViewModel { Description = productItem.Description, TypeProduct = productItem.Type.TypeName, Id = productItem.ID });
+                    }
+                    return lsProductViewModel;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         public async Task<EditProductEditViewModel> GetProductById(Guid id)
         {
             var payload = await _ProductBaseHandler.GetOneEntity(id);
             var dataMapped = _Mapper.Map(payload, new EditProductEditViewModel());
             return dataMapped;
 
+        }
+        public async Task<ResponsePayload> UpdateProductInformation(EditProductEditViewModel data)
+        {
+            var payload = await _ProductBaseHandler.UpdateEntity(data, data.ID);
+            return payload;
         }
     }
 }

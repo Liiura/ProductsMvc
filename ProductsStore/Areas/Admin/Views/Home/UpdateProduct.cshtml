@@ -11,6 +11,7 @@
             </div>
             <div class="card-body">
                 <form id="productEditForm">
+                    @Html.HiddenFor(x => x.ID)
                     <div class="form-group">
                         @Html.LabelFor(model => model.ID)
                         <br />
@@ -41,6 +42,7 @@
                         @Html.DropDownListFor(model => model.TypeId, (IEnumerable<SelectListItem>)ViewBag.OptionsTypeProduct, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
                     </div>
+                    @Html.HiddenFor(x => x.CreatedDate)
                     <div class="form-group">
                         @Html.LabelFor(model => model.CreatedDate)
                         <br />
