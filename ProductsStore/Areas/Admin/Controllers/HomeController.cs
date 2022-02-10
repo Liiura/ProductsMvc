@@ -34,10 +34,22 @@ namespace ProductsStore.Areas.Admin.Controllers
         }
         public async Task<PartialViewResult> RenderProductsCardWithFilter(string description, Guid? id)
         {
-            if (!string.IsNullOrEmpty(description))
+            var response = new List<ProductsHomeViewModel>();
+            if (Guid.Empty != id && id != null)
             {
-
+                var dataProd = await _ProductHandler.GetProductById((Guid)id);
+                var dataMapped = _Mapper.Map(dataProd, new ProductsHomeViewModel());
+                response.Add(dataMapped);
             }
+            else if (!string.IsNullOrEmpty(description))
+            {
+                response = await _ProductHandler.GetAllProductsByDescriptionWithProxy(description);
+            }
+            else
+            {
+                response = await _ProductHandler.GetAllProductsWithProxy();
+            }
+            return PartialView(response);
         }
         public async Task<ActionResult> CreateProduct()
         {

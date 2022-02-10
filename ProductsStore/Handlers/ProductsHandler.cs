@@ -33,16 +33,13 @@ namespace ProductsStore.Handlers
         {
             try
             {
-                using (var context = _DbProducts)
+                var lsProductViewModel = new List<ProductsHomeViewModel>();
+                var payload = await _DbProducts.Product.ToListAsync();
+                foreach (var productItem in payload)
                 {
-                    var lsProductViewModel = new List<ProductsHomeViewModel>();
-                    var payload = await context.Product.ToListAsync();
-                    foreach (var productItem in payload)
-                    {
-                        lsProductViewModel.Add(new ProductsHomeViewModel { Description = productItem.Description, TypeProduct = productItem.Type.TypeName, Id = productItem.ID });
-                    }
-                    return lsProductViewModel;
+                    lsProductViewModel.Add(new ProductsHomeViewModel { Description = productItem.Description, TypeProduct = productItem.Type.TypeName, Id = productItem.ID });
                 }
+                return lsProductViewModel;
             }
             catch (Exception)
             {
@@ -53,16 +50,13 @@ namespace ProductsStore.Handlers
         {
             try
             {
-                using (var context = _DbProducts)
+                var lsProductViewModel = new List<ProductsHomeViewModel>();
+                var payload = await _DbProducts.Product.Where(x => x.Description.Contains(description)).ToListAsync();
+                foreach (var productItem in payload)
                 {
-                    var lsProductViewModel = new List<ProductsHomeViewModel>();
-                    var payload = await context.Product.Where(x => x.Description.Contains(description)).ToListAsync();
-                    foreach (var productItem in payload)
-                    {
-                        lsProductViewModel.Add(new ProductsHomeViewModel { Description = productItem.Description, TypeProduct = productItem.Type.TypeName, Id = productItem.ID });
-                    }
-                    return lsProductViewModel;
+                    lsProductViewModel.Add(new ProductsHomeViewModel { Description = productItem.Description, TypeProduct = productItem.Type.TypeName, Id = productItem.ID });
                 }
+                return lsProductViewModel;
             }
             catch (Exception)
             {
@@ -72,7 +66,7 @@ namespace ProductsStore.Handlers
         public async Task<EditProductEditViewModel> GetProductById(Guid id)
         {
             var payload = await _ProductBaseHandler.GetOneEntity(id);
-            var dataMapped = _Mapper.Map(payload, new EditProductEditViewModel());
+            var dataMapped = _Mapper.Map(payload, new EditProductEditViewModel { TypeProduct = payload.Type.Description });
             return dataMapped;
 
         }

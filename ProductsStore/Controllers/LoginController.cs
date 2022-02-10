@@ -19,8 +19,16 @@ namespace ProductsStore.Controllers
             _LoginHandlerRepo = new LoginHandler(_dbProduts);
             _ToastNotification = toastNotification;
         }
-        public IActionResult Index()
+        public ActionResult Index()
         {
+            var currentSessionObject = HttpContext.Session.GetObject<SessionModel>("UserSession");
+            if (currentSessionObject != null)
+            {
+                if (currentSessionObject.RoleType == "Admin")
+                {
+                    return RedirectToAction("", "Home", new { area = "Admin" });
+                }
+            }
             return View();
         }
         [HttpPost]

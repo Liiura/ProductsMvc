@@ -17,23 +17,19 @@ namespace ProductsStore.Handlers
         }
         public async Task<SessionModel> SignIn(UserViewModel userData)
         {
-            using (var context = _DbProducts)
+            userData.Password = ComputeStringToSha256Hash(userData.Password);
+            var user = await _DbProducts.UserClient.Where(x => x.UserName == userData.UserName && x.Password == userData.Password).FirstOrDefaultAsync();
+            if (user != null)
             {
-                userData.Password = ComputeStringToSha256Hash(userData.Password);
-                var user = await context.UserClient.Where(x => x.UserName == userData.UserName && x.Password == userData.Password).FirstOrDefaultAsync();
-                if (user != null)
+                var sessionModel = new SessionModel
                 {
-                    var sessionModel = new SessionModel
-                    {
-                        IdUser = user.Id,
-                        RoleType = user.RoleType.Name,
-                        UserName = user.UserName
-                    };
-                    return sessionModel;
-                }
-                return new SessionModel();
-
+                    IdUser = user.Id,
+                    RoleType = user.RoleType.Name,
+                    UserName = user.UserName
+                };
+                return sessionModel;
             }
+            return new SessionModel();
         }
         public string ComputeStringToSha256Hash(string textToHash)
         {

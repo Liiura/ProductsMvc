@@ -12,6 +12,7 @@ namespace ProductsStore.Mapper
             CreateMap<UserClient, UserViewModel>().ReverseMap();
             CreateMap<Product, CreateProductEditViewModel>().ReverseMap();
             CreateMap<Product, EditProductEditViewModel>().ReverseMap();
+            CreateMap<EditProductEditViewModel, ProductsHomeViewModel>().ReverseMap();
         }
     }
 }

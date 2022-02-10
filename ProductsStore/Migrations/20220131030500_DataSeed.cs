@@ -44,7 +44,7 @@ namespace ProductsStore.Migrations
             migrationBuilder.InsertData(
                 table: "UserClient",
                 columns: new[] { "Id", "CreatedDate", "LastName", "Name", "Password", "RoleTypeId", "UserName" },
-                values: new object[] { new Guid("1f6fa97d-5908-4edc-a79d-3e0bfee11647"), new DateTime(2022, 1, 30, 22, 4, 59, 518, DateTimeKind.Local).AddTicks(8993), "Admin", "Admin", "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92", new Guid("c1d6e045-4999-4209-bd14-fc1796d7d7b1"), "Admin.dev" });
+                values: new object[] { new Guid("1f6fa97d-5908-4edc-a79d-3e0bfee11647"), new DateTime(2022, 1, 30, 22, 4, 59, 518, DateTimeKind.Local).AddTicks(8993), "Admin", "Admin", "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92", new Guid("0079530e-415f-4df7-9422-2d0b55ef1f09"), "Admin.dev" });
 
             migrationBuilder.AddForeignKey(
                 name: "FK_UserClient_RoleType_RoleTypeId",

@@ -19,5 +19,6 @@ namespace ProductsStore.Areas.Admin.Data
         public Guid TypeId { get; set; }
         [Display(Name = "Created Date")]
         public DateTime CreatedDate { get; set; }
+        public string TypeProduct { get; set; }
     }
 }

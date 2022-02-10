@@ -13,10 +13,14 @@
             event.preventDefault();
             UpdateProduct()
         })
-        container.on("click", "button[data-action-product=searchByDescription]", function () {
+        container.on("click", "button[data-action-product=searchByFilter]", function () {
             event.preventDefault();
-            searchByDescription()
-
+            searchByFilter()
+        })
+        container.on("click", "button[data-action-product=clearSearch]", function () {
+            event.preventDefault();
+            $("#filterHome")[0].reset()
+            searchByFilter()
         })
     }
     function SaveProduct() {
@@ -26,8 +30,9 @@
             formElement.trigger("reset");
         }
     }
-    function searchByDescription() {
-        console.log($("#description").val())
+    async function searchByFilter() {
+        let response = await AjaxRequestToSearchByFilter()
+        $("#dataContainer").html(response);
     }
     function UpdateProduct() {
         $("#productEditForm").validate();
@@ -39,13 +44,14 @@
         this.message = message;
         this.name = "UserException";
     }
-    async function AjaxRequestToSearchByDescription() {
+    async function AjaxRequestToSearchByFilter() {
         try {
-            await $.ajax({
-                url: baseControllerUrl + "InsertProduct",
+            let result = await $.ajax({
+                url: baseControllerUrl + "RenderProductsCardWithFilter",
                 type: "POST",
-                data: formElement.serialize()
+                data: $("#filterHome").serialize()
             })
+            return result;
         } catch (e) {
             let objectException = new UserException("Server error");
             throw objectException;
