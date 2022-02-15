@@ -17,6 +17,7 @@
 ####################
 # VS Upgrade stuff #
 .vs
+.vscode
 ####################
 UpgradeLog.XML
 _UpgradeReport_Files/
