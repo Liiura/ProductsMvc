@@ -39,7 +39,10 @@ namespace ProductsStore.Areas.Admin.Controllers
             {
                 var dataProd = await _ProductHandler.GetProductById((Guid)id);
                 var dataMapped = _Mapper.Map(dataProd, new ProductsHomeViewModel());
-                response.Add(dataMapped);
+                if (Guid.Empty != dataMapped.Id && dataMapped.Id != null)
+                {
+                    response.Add(dataMapped);
+                }
             }
             else if (!string.IsNullOrEmpty(description))
             {
@@ -66,7 +69,7 @@ namespace ProductsStore.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public async Task InsertProduct(CreateProductEditViewModel data)
+        public async Task<ActionResult> InsertProduct(CreateProductEditViewModel data)
         {
             var response = await _ProductHandler.CreateDbProduct(data);
             if (response.IsSuccess)
@@ -77,6 +80,7 @@ namespace ProductsStore.Areas.Admin.Controllers
             {
                 _ToastNotification.AddErrorToastMessage("Internal server error");
             }
+            return Json(new { response.IsSuccess, redirectToUrl = Url.Action("", "Home", new { area = "Admin" }) });
         }
         public async Task<ActionResult> UpdateProduct(Guid id)
         {
@@ -92,7 +96,7 @@ namespace ProductsStore.Areas.Admin.Controllers
             ViewBag.OptionsValue = lstActiveProduct;
             return View(response);
         }
-        public async Task UpdateProductInformation(EditProductEditViewModel data)
+        public async Task<JsonResult> UpdateProductInformation(EditProductEditViewModel data)
         {
             var response = await _ProductHandler.UpdateProductInformation(data);
             if (response.IsSuccess)
@@ -103,6 +107,7 @@ namespace ProductsStore.Areas.Admin.Controllers
             {
                 _ToastNotification.AddErrorToastMessage("Internal server error");
             }
+            return Json(new { response.IsSuccess, redirectToUrl = Url.Action("", "Home", new { area = "Admin" }) });
         }
     }
 }

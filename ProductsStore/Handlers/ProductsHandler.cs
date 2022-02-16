@@ -66,9 +66,13 @@ namespace ProductsStore.Handlers
         public async Task<EditProductEditViewModel> GetProductById(Guid id)
         {
             var payload = await _ProductBaseHandler.GetOneEntity(id);
-            var dataMapped = _Mapper.Map(payload, new EditProductEditViewModel { TypeProduct = payload.Type.Description });
+            var dataMapped = new EditProductEditViewModel();
+            if (payload != null)
+            {
+                dataMapped.TypeProduct = payload.Type.Description;
+                dataMapped = _Mapper.Map(payload, new EditProductEditViewModel { TypeProduct = payload.Type.Description });
+            }
             return dataMapped;
-
         }
         public async Task<ResponsePayload> UpdateProductInformation(EditProductEditViewModel data)
         {

@@ -23,21 +23,27 @@
             searchByFilter()
         })
     }
-    function SaveProduct() {
+    async function SaveProduct() {
         formElement.validate();
         if (formElement.valid()) {
-            AjaxRequestToInsertProduct()
-            formElement.trigger("reset");
+            const payload = await AjaxRequestToInsertProduct()
+            if (payload.isSuccess) {
+                formElement.trigger("reset");
+                window.location.href = payload.redirectToUrl
+            }
         }
     }
     async function searchByFilter() {
         let response = await AjaxRequestToSearchByFilter()
         $("#dataContainer").html(response);
     }
-    function UpdateProduct() {
+    async function UpdateProduct() {
         $("#productEditForm").validate();
         if ($("#productEditForm").valid()) {
-            AjaxRequestToUpdateProduct()
+            const payload = await AjaxRequestToUpdateProduct();
+            if (payload.isSuccess) {
+                window.location.href = payload.redirectToUrl
+            }
         }
     }
     function UserException(message) {
@@ -59,11 +65,12 @@
     }
     async function AjaxRequestToInsertProduct() {
         try {
-            await $.ajax({
+            let result = await $.ajax({
                 url: baseControllerUrl +"InsertProduct",
                 type: "POST",
                 data: formElement.serialize()
             })
+            return result;
         } catch (e) {
             let objectException = new UserException("Server error");
             throw objectException;
@@ -71,11 +78,12 @@
     }
     async function AjaxRequestToUpdateProduct() {
         try {
-            await $.ajax({
+            let result = await $.ajax({
                 url: baseControllerUrl + "UpdateProductInformation",
                 type: "POST",
                 data: $("#productEditForm").serialize()
             })
+            return result;
         } catch (e) {
             let objectException = new UserException("Server error");
             throw objectException;

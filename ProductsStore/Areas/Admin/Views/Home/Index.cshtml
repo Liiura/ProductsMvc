@@ -7,6 +7,7 @@
 <div id="homeAdminContainer">
     <div class="py-5">
         <div class="container">
+            <h2>Filters</h2>
             <div class="row hidden-md-up">
                 <div class="col-md-7">
                     <form id="filterHome">
@@ -32,7 +33,7 @@
             </div>
         </div>
     </div>
-    <div id="dataContainer">
+    <div id="dataContainer" style="overflow-y: auto; height: 400px">
         @await Html.PartialAsync("RenderProductsCardWithFilter")
     </div>
 </div>
