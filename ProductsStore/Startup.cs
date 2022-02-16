@@ -4,8 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ProductsStore.ContextDB;
-using ProductsStore.Mapper;
+using ProductsStore.Data.ContextDB;
+using ProductsStore.Data.Mapper;
+
 namespace ProductsStore
 {
     public class Startup

@@ -32,4 +32,8 @@
     <Folder Include="Areas\Client\Views\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ProductsStore.BusinessLayer\ProductsStore.BusinessLayer.csproj" />
+  </ItemGroup>
+
 </Project>

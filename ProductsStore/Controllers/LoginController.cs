@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
-using ProductsStore.ContextDB;
+using ProductsStore.BusinessLayer.BusinessLogic;
+using ProductsStore.Data.ContextDB;
 using ProductsStore.Extensions;
-using ProductsStore.Handlers;
-using ProductsStore.ViewModels;
+using ProductsStore.Presentation.SharedViewModels;
 using System;
 using System.Threading.Tasks;
 
@@ -12,11 +12,11 @@ namespace ProductsStore.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly LoginHandler _LoginHandlerRepo;
+        private readonly LoginBusinessLogic _LoginHandlerRepo;
         private readonly IToastNotification _ToastNotification;
-        public LoginController(ProductsContext _dbProduts, IToastNotification toastNotification)
+        public LoginController(ProductsContext dbContext, IToastNotification toastNotification)
         {
-            _LoginHandlerRepo = new LoginHandler(_dbProduts);
+            _LoginHandlerRepo = new LoginBusinessLogic(dbContext);
             _ToastNotification = toastNotification;
         }
         public ActionResult Index()
@@ -34,7 +34,7 @@ namespace ProductsStore.Controllers
         [HttpPost]
         public async Task<JsonResult> SignIn(UserViewModel dataLogin)
         {
-            var user = await _LoginHandlerRepo.SignIn(dataLogin);
+            var user = await _LoginHandlerRepo.SignInAsync(dataLogin);
             if (user.IdUser != null && user.IdUser != Guid.Empty)
             {
                 HttpContext.Session.SetObject("UserSession", user);

@@ -1,13 +1,15 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using ProductsStore.ContextDB;
-using ProductsStore.Models;
+using ProductsStore.Data.ContextDB;
+using ProductsStore.Data.Models;
+using ProductsStore.WebApi.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-namespace ProductsStore.Handlers
+
+namespace ProductsStore.WebApi.Handlers
 {
-    public class TypeProductHandler : BaseHandler<TypeProduct>
+    public class TypeProductHandler : BaseRepository<TypeProduct>
     {
         public TypeProductHandler(ProductsContext _dbProduts, IMapper mapper) : base(_dbProduts, mapper)
         { }

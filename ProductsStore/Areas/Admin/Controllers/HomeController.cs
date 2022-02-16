@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NToastNotify;
-using ProductsStore.Areas.Admin.Data;
-using ProductsStore.ContextDB;
-using ProductsStore.Handlers;
+using ProductsStore.BusinessLayer.BusinessLogic;
+using ProductsStore.Data.ContextDB;
+using ProductsStore.Presentation.AdminViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,22 +14,20 @@ namespace ProductsStore.Areas.Admin.Controllers
     [Area("Admin")]
     public class HomeController : Controller
     {
-        private readonly ProductsContext _DbProducts;
+        private readonly TypeProductBusinessLogic _TypeProductHandler;
+        private readonly ProductBusinessLogic _ProductHandler;
         private readonly IMapper _Mapper;
-        private readonly TypeProductHandler _TypeProductHandler;
-        private readonly ProductsHandler _ProductHandler;
         private readonly IToastNotification _ToastNotification;
         public HomeController(ProductsContext _dbProduts, IMapper mapper, IToastNotification toastNotification)
         {
-            _DbProducts = _dbProduts;
-            _Mapper = mapper;
-            _TypeProductHandler = new TypeProductHandler(_DbProducts, _Mapper);
-            _ProductHandler = new ProductsHandler(_DbProducts, _Mapper);
+            _TypeProductHandler = new TypeProductBusinessLogic(_dbProduts, mapper);
+            _ProductHandler = new ProductBusinessLogic(_dbProduts, mapper);
             _ToastNotification = toastNotification;
+            _Mapper = mapper;
         }
         public async Task<ActionResult> Index()
         {
-            var productsList = await _ProductHandler.GetAllProductsWithProxy();
+            var productsList = await _ProductHandler.GetAllProductsWithProxyAsync();
             return View(productsList);
         }
         public async Task<PartialViewResult> RenderProductsCardWithFilter(string description, Guid? id)
@@ -37,7 +35,7 @@ namespace ProductsStore.Areas.Admin.Controllers
             var response = new List<ProductsHomeViewModel>();
             if (Guid.Empty != id && id != null)
             {
-                var dataProd = await _ProductHandler.GetProductById((Guid)id);
+                var dataProd = await _ProductHandler.GetProductByIdAsync((Guid)id);
                 var dataMapped = _Mapper.Map(dataProd, new ProductsHomeViewModel());
                 if (Guid.Empty != dataMapped.Id && dataMapped.Id != null)
                 {
@@ -46,11 +44,11 @@ namespace ProductsStore.Areas.Admin.Controllers
             }
             else if (!string.IsNullOrEmpty(description))
             {
-                response = await _ProductHandler.GetAllProductsByDescriptionWithProxy(description);
+                response = await _ProductHandler.GetAllProductsByDescriptionWithProxyAsync(description);
             }
             else
             {
-                response = await _ProductHandler.GetAllProductsWithProxy();
+                response = await _ProductHandler.GetAllProductsWithProxyAsync();
             }
             return PartialView(response);
         }
@@ -62,7 +60,7 @@ namespace ProductsStore.Areas.Admin.Controllers
                 new SelectListItem{ Text = "Yes", Value = "True" },
                 new SelectListItem{ Text = "No", Value = "False" },
             };
-            var lsTypeProduct = await _TypeProductHandler.GetAllTypeProducts();
+            var lsTypeProduct = await _TypeProductHandler.GetAllTypeProductsAsync();
             ViewBag.OptionsTypeProduct = lsTypeProduct;
             ViewBag.OptionsValue = lstActiveProduct;
 
@@ -71,7 +69,7 @@ namespace ProductsStore.Areas.Admin.Controllers
         [HttpPost]
         public async Task<ActionResult> InsertProduct(CreateProductEditViewModel data)
         {
-            var response = await _ProductHandler.CreateDbProduct(data);
+            var response = await _ProductHandler.CreateDbProductAsync(data);
             if (response.IsSuccess)
             {
                 _ToastNotification.AddSuccessToastMessage("Product created");
@@ -84,21 +82,21 @@ namespace ProductsStore.Areas.Admin.Controllers
         }
         public async Task<ActionResult> UpdateProduct(Guid id)
         {
-            var response = await _ProductHandler.GetProductById(id);
+            var response = await _ProductHandler.GetProductByIdAsync(id);
             List<SelectListItem> lstActiveProduct = new List<SelectListItem>
             {
                 new SelectListItem{ Text = "Choose", Value = "" },
                 new SelectListItem{ Text = "Yes", Value = "True" },
                 new SelectListItem{ Text = "No", Value = "False" },
             };
-            var lsTypeProduct = await _TypeProductHandler.GetAllTypeProducts();
+            var lsTypeProduct = await _TypeProductHandler.GetAllTypeProductsAsync();
             ViewBag.OptionsTypeProduct = lsTypeProduct;
             ViewBag.OptionsValue = lstActiveProduct;
             return View(response);
         }
         public async Task<JsonResult> UpdateProductInformation(EditProductEditViewModel data)
         {
-            var response = await _ProductHandler.UpdateProductInformation(data);
+            var response = await _ProductHandler.UpdateProductInformationAsync(data);
             if (response.IsSuccess)
             {
                 _ToastNotification.AddSuccessToastMessage("Product updated");
