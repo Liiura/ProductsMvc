@@ -64,6 +64,7 @@
                 type: "POST",
                 data: formElement.serialize()
             })
+            return false;
         } catch (e) {
             let objectException = new UserException("Server error");
             throw objectException;
