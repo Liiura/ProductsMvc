@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProductsStore.ContextDB;
 using ProductsStore.Mapper;
-using ProductsStore.Middlewares;
 namespace ProductsStore
 {
     public class Startup
@@ -55,7 +54,7 @@ namespace ProductsStore
             app.UseStaticFiles();
             app.UseSession();
             app.UseRouting();
-            app.UseMyMiddleware();
+            //app.UseMyMiddleware();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
