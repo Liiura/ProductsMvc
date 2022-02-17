@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ProductsStore.ViewModels
+namespace ProductsStore.Presentation.SharedViewModels
 {
     public class UserViewModel
     {

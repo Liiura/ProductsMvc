@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ProductsStore.ContextDB;
+using ProductsStore.Data.ContextDB;
 
-namespace ProductsStore.Migrations
+namespace ProductsStore.Data.Migrations
 {
     [DbContext(typeof(ProductsContext))]
-    [Migration("20220131030500_DataSeed")]
-    partial class DataSeed
+    [Migration("20220130234956_initialdatabase")]
+    partial class initialdatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -69,22 +69,6 @@ namespace ProductsStore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RoleType");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("0079530e-415f-4df7-9422-2d0b55ef1f09"),
-                            CreatedDate = new DateTime(2022, 1, 30, 22, 4, 59, 518, DateTimeKind.Local).AddTicks(6347),
-                            Description = "Admin",
-                            Name = "Admin"
-                        },
-                        new
-                        {
-                            Id = new Guid("c1d6e045-4999-4209-bd14-fc1796d7d7b1"),
-                            CreatedDate = new DateTime(2022, 1, 30, 22, 4, 59, 516, DateTimeKind.Local).AddTicks(9267),
-                            Description = "Admin",
-                            Name = "Admin"
-                        });
                 });
 
             modelBuilder.Entity("ProductsStore.Models.TypeProduct", b =>
@@ -108,36 +92,6 @@ namespace ProductsStore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TypeProduct");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("6a68d090-dbdc-4f62-bd12-70ac63b81864"),
-                            CreatedDate = new DateTime(2022, 1, 30, 22, 4, 59, 517, DateTimeKind.Local).AddTicks(4614),
-                            Description = "Bienes",
-                            TypeName = "Bienes"
-                        },
-                        new
-                        {
-                            Id = new Guid("98ee398b-5a56-4d15-ba2d-60e143ca3de1"),
-                            CreatedDate = new DateTime(2022, 1, 30, 22, 4, 59, 517, DateTimeKind.Local).AddTicks(5179),
-                            Description = "Vehiculos",
-                            TypeName = "Vehiculos"
-                        },
-                        new
-                        {
-                            Id = new Guid("2c708de0-3933-4054-abd4-ca13ddfb298e"),
-                            CreatedDate = new DateTime(2022, 1, 30, 22, 4, 59, 517, DateTimeKind.Local).AddTicks(5201),
-                            Description = "Terrenos",
-                            TypeName = "Terrenos"
-                        },
-                        new
-                        {
-                            Id = new Guid("c232b924-94fb-487e-9470-512543992db8"),
-                            CreatedDate = new DateTime(2022, 1, 30, 22, 4, 59, 517, DateTimeKind.Local).AddTicks(5214),
-                            Description = "Apartamentos",
-                            TypeName = "Apartamentos"
-                        });
                 });
 
             modelBuilder.Entity("ProductsStore.Models.UserClient", b =>
@@ -164,7 +118,7 @@ namespace ProductsStore.Migrations
                         .HasMaxLength(2147483647)
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("RoleTypeId")
+                    b.Property<Guid?>("RoleTypeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserName")
@@ -176,18 +130,6 @@ namespace ProductsStore.Migrations
                     b.HasIndex("RoleTypeId");
 
                     b.ToTable("UserClient");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("1f6fa97d-5908-4edc-a79d-3e0bfee11647"),
-                            CreatedDate = new DateTime(2022, 1, 30, 22, 4, 59, 518, DateTimeKind.Local).AddTicks(8993),
-                            LastName = "Admin",
-                            Name = "Admin",
-                            Password = "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
-                            RoleTypeId = new Guid("c1d6e045-4999-4209-bd14-fc1796d7d7b1"),
-                            UserName = "Admin.dev"
-                        });
                 });
 
             modelBuilder.Entity("ProductsStore.Models.Product", b =>
@@ -205,9 +147,7 @@ namespace ProductsStore.Migrations
                 {
                     b.HasOne("ProductsStore.Models.RoleType", "RoleType")
                         .WithMany("UserClients")
-                        .HasForeignKey("RoleTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoleTypeId");
 
                     b.Navigation("RoleType");
                 });

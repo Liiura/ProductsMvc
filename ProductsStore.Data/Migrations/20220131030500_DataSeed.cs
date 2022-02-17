@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace ProductsStore.Migrations
+namespace ProductsStore.Data.Migrations
 {
     public partial class DataSeed : Migration
     {

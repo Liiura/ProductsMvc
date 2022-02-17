@@ -1,7 +1,7 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
-namespace ProductsStore.Migrations
+namespace ProductsStore.Data.Migrations
 {
     public partial class initialdatabase : Migration
     {

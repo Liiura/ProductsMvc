@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ProductsStore.ViewModels
+namespace ProductsStore.Presentation.SharedViewModels
 {
     public class SessionModel
     {

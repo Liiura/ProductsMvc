@@ -1,19 +1,19 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using ProductsStore.Extensions;
-using ProductsStore.ViewModels;
+using ProductsStore.Presentation.SharedViewModels;
 using System.Threading.Tasks;
 namespace ProductsStore.Middlewares
 {
     // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
     public class Middleware
     {
-        private readonly RequestDelegate _next;
+        private readonly RequestDelegate _Next;
         private const string _AdminConst = "Admin";
         private const string _ClientConst = "Client";
         public Middleware(RequestDelegate next)
         {
-            _next = next;
+            _Next = next;
         }
 
         public async Task Invoke(HttpContext httpContext)
@@ -33,7 +33,7 @@ namespace ProductsStore.Middlewares
                     {
                         if (!httpContext.Response.HasStarted)
                         {
-                            await _next.Invoke(httpContext);
+                            await _Next.Invoke(httpContext);
                         }
                     }
                     else if (splitPath[1] == "Project" && currentSessionObject.RoleType == _ClientConst)
@@ -44,7 +44,7 @@ namespace ProductsStore.Middlewares
             }
             if (!httpContext.Response.HasStarted)
             {
-                await _next.Invoke(httpContext);
+                await _Next.Invoke(httpContext);
             }
         }
     }

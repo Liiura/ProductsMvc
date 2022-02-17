@@ -1,26 +1,21 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using ProductsStore.ContextDB;
-using ProductsStore.Models;
+using ProductsStore.Data.ContextDB;
+using ProductsStore.Data.Models;
+using ProductsStore.WebApi.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-namespace ProductsStore.Handlers
+
+namespace ProductsStore.WebApi.Handlers
 {
-    public class TypeProductHandler
+    public class TypeProductHandler : BaseRepository<TypeProduct>
     {
-        private readonly ProductsContext _DbProducts;
-        private readonly IMapper _Mapper;
-        private BaseHandler<TypeProduct> _TypeProductBaseHandler;
-        public TypeProductHandler(ProductsContext _dbProduts, IMapper mapper)
-        {
-            _DbProducts = _dbProduts;
-            _Mapper = mapper;
-            _TypeProductBaseHandler = new BaseHandler<TypeProduct>(_DbProducts, _Mapper);
-        }
+        public TypeProductHandler(ProductsContext _dbProduts, IMapper mapper) : base(_dbProduts, mapper)
+        { }
         public async Task<List<SelectListItem>> GetAllTypeProducts()
         {
-            var listTypeProduct = await _TypeProductBaseHandler.GetAllEntities();
+            var listTypeProduct = await GetAllEntities();
             var selectViewTypeProductList = new List<SelectListItem>();
             selectViewTypeProductList.Add(new SelectListItem { Text = "Choose", Value = "" });
             foreach (var typeProduct in listTypeProduct)

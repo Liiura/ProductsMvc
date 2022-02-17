@@ -1,4 +1,4 @@
-﻿namespace ProductsStore.ViewModels
+﻿namespace ProductsStore.Presentation.SharedViewModels
 {
     public class ResponsePayload
     {

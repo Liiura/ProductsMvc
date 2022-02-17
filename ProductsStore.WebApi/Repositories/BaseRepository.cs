@@ -1,18 +1,18 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using ProductsStore.ContextDB;
-using ProductsStore.ViewModels;
+using ProductsStore.Data.ContextDB;
+using ProductsStore.Presentation.SharedViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ProductsStore.Handlers
+namespace ProductsStore.WebApi.Repositories
 {
-    public class BaseHandler<T> where T : class
+    public class BaseRepository<T> where T : class
     {
         private readonly ProductsContext _DbProducts;
         private readonly IMapper _Mapper;
-        public BaseHandler(ProductsContext _dbProduts, IMapper mapper)
+        public BaseRepository(ProductsContext _dbProduts, IMapper mapper)
         {
             _DbProducts = _dbProduts;
             _Mapper = mapper;

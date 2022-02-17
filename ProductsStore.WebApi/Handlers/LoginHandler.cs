@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProductsStore.ContextDB;
-using ProductsStore.ViewModels;
+using ProductsStore.Data.ContextDB;
+using ProductsStore.Presentation.SharedViewModels;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProductsStore.Handlers
+namespace ProductsStore.WebApi.Handlers
 {
     public class LoginHandler
     {
