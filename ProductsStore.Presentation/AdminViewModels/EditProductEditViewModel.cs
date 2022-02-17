@@ -19,6 +19,6 @@ namespace ProductsStore.Presentation.AdminViewModels
         public Guid TypeId { get; set; }
         [Display(Name = "Created Date")]
         public DateTime CreatedDate { get; set; }
-        public string TypeProduct { get; set; }
+        public string TypeName { get; set; }
     }
 }

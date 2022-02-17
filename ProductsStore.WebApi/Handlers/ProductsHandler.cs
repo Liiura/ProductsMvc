@@ -32,13 +32,18 @@ namespace ProductsStore.WebApi.Handlers
         {
             try
             {
-                var lsProductViewModel = new List<ProductsHomeViewModel>();
-                var payload = await _DbProducts.Product.ToListAsync();
-                foreach (var productItem in payload)
+                //var lsProductViewModel = new List<ProductsHomeViewModel>();
+                var payload = await _DbProducts.Product.Select(x => new ProductsHomeViewModel
                 {
-                    lsProductViewModel.Add(new ProductsHomeViewModel { Description = productItem.Description, TypeProduct = productItem.Type.TypeName, Id = productItem.ID });
-                }
-                return lsProductViewModel;
+                    Id = x.ID,
+                    Description = x.Description,
+                    TypeName = x.Type.TypeName
+                }).ToListAsync();
+                //foreach (var productItem in payload)
+                //{
+                //    lsProductViewModel.Add(_Mapper.Map(productItem, new ProductsHomeViewModel()));
+                //}
+                return payload;
             }
             catch (Exception)
             {
@@ -49,15 +54,20 @@ namespace ProductsStore.WebApi.Handlers
         {
             try
             {
-                var lsProductViewModel = new List<ProductsHomeViewModel>();
-                var payload = await _DbProducts.Product.Where(x => x.Description.Contains(description)).ToListAsync();
-                foreach (var productItem in payload)
+                //var lsProductViewModel = new List<ProductsHomeViewModel>();
+                var payload = await _DbProducts.Product.Where(x => x.Description.Contains(description)).Select(x => new ProductsHomeViewModel
                 {
-                    lsProductViewModel.Add(new ProductsHomeViewModel { Description = productItem.Description, TypeProduct = productItem.Type.TypeName, Id = productItem.ID });
-                }
-                return lsProductViewModel;
+                    Id = x.ID,
+                    Description = x.Description,
+                    TypeName = x.Type.TypeName
+                }).ToListAsync();
+                //foreach (var productItem in payload)
+                //{
+                //    lsProductViewModel.Add(_Mapper.Map(productItem, new ProductsHomeViewModel()));
+                //}
+                return payload;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -68,8 +78,7 @@ namespace ProductsStore.WebApi.Handlers
             var dataMapped = new EditProductEditViewModel();
             if (payload != null)
             {
-                dataMapped.TypeProduct = payload.Type.Description;
-                dataMapped = _Mapper.Map(payload, new EditProductEditViewModel { TypeProduct = payload.Type.Description });
+                dataMapped = _Mapper.Map(payload, new EditProductEditViewModel());
             }
             return dataMapped;
         }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using ProductsStore.Extensions;
-using ProductsStore.ViewModels;
+using ProductsStore.Presentation.SharedViewModels;
 using System.Threading.Tasks;
 namespace ProductsStore.Middlewares
 {
